@@ -1,11 +1,14 @@
 package com.stmk.sddatavr.search
 
 import org.elasticsearch.client.Client
+import org.elasticsearch.client.transport.TransportClient
 import org.elasticsearch.common.settings.Settings
-import org.elasticsearch.node.Node
-import org.elasticsearch.node.NodeBuilder
+import org.elasticsearch.common.transport.InetSocketTransportAddress
+import org.elasticsearch.transport.client.PreBuiltTransportClient
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.net.InetAddress
 
 /**
  * Created by Krishna Chaitanya Kandula on 10/3/17.
@@ -14,25 +17,20 @@ import org.springframework.context.annotation.Configuration
 class Config {
 
     @Bean(name = arrayOf("ClusterName"))
-    fun provideClusterName(): String = "elasticsearch"
+    fun provideClusterName(): String = "my-application"
 
     @Bean
-    fun provideElasticSearchSettings(): Settings {
-        return Settings.settingsBuilder()
+    fun provideElasticSearchSettings(@Qualifier("ClusterName") clusterName: String): Settings {
+        return Settings.builder()
+                .put("cluster.name", clusterName)
                 .put("path.home", "/Users/krishnakandula/Documents/ElasticSearchHome")
                 .build()
     }
 
     @Bean
-    fun provideNode(clusterName: String, settings: Settings): Node {
-        return NodeBuilder.nodeBuilder()
-                .settings(settings)
-                .clusterName(clusterName)
-                .client(true)
-                .node()
+    fun provideClient(settings: Settings): Client {
+        return PreBuiltTransportClient(settings)
+                .addTransportAddress(InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"), 9300))
     }
-
-    @Bean
-    fun provideClient(node: Node): Client = node.client()
 
 }

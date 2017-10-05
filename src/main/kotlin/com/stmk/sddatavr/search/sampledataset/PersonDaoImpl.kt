@@ -1,7 +1,6 @@
 package com.stmk.sddatavr.search.sampledataset
 
 import com.google.gson.Gson
-import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.client.Client
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -30,18 +29,21 @@ class PersonDaoImpl @Autowired constructor(private val searchClient: Client,
                 .execute()
                 .actionGet()
 
-        val results: List<Person> = mutableListOf()
-        response.hits.forEach({gson.fromJson(it.sourceAsString, Person::class.java)})
-        return results
+        return response.hits.map { gson.fromJson(it.sourceAsString, Person::class.java) }
     }
 
     override fun addPerson(person: Person): Boolean {
         val jsonStr: String = gson.toJson(person)
-        val response: IndexResponse = searchClient.prepareIndex("people", "person")
-                .setSource(jsonStr)
-                .execute()
-                .actionGet()
-
-        return response.isCreated
+        return try {
+            searchClient.prepareIndex("people", "person")
+                    .setSource(jsonStr)
+                    .execute()
+                    .actionGet()
+            true
+        } catch (e: Exception) {
+            //TODO: Change to Log
+            println(e.message)
+            false
+        }
     }
 }
