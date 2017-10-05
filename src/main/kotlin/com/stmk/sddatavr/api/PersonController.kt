@@ -19,4 +19,10 @@ class PersonController @Autowired constructor(private val personDao: PersonDao) 
 
     @RequestMapping("/person/{name}", method = arrayOf(RequestMethod.GET))
     fun getPersonsWithName(@PathVariable("name") name: String): List<Person> = personDao.getPersonsWithName(name)
+
+    @RequestMapping("/person", method = arrayOf(RequestMethod.POST))
+    fun postPerson(): Boolean {
+        val person = Person("Dragon", 10, null)
+        return personDao.addPerson(person)
+    }
 }
