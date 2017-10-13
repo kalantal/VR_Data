@@ -15,14 +15,12 @@ import org.springframework.web.bind.annotation.RestController
 class PersonController @Autowired constructor(private val personDao: PersonDao) {
 
     @RequestMapping("/person", method = arrayOf(RequestMethod.GET))
-    fun getPersons(): List<Person> = personDao.getAllPersons()
+    fun getPersons(): List<Person> = personDao.getAllPeople()
 
     @RequestMapping("/person/{name}", method = arrayOf(RequestMethod.GET))
-    fun getPersonsWithName(@PathVariable("name") name: String): List<Person> = personDao.getPersonsWithName(name)
+    fun getPersonsWithName(@PathVariable("name") name: String): List<Person> = personDao.getWithName(name)
 
+    //TODO: Add add() function to PersonDao interface
     @RequestMapping("/person", method = arrayOf(RequestMethod.POST))
-    fun postPerson(): Boolean {
-        val person = Person("Dragon", 10, null)
-        return personDao.addPerson(person)
-    }
+    fun postPerson(): Boolean = false
 }

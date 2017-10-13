@@ -5,9 +5,11 @@ package com.stmk.sddatavr.search.sampledataset
  */
 interface PersonDao {
 
-    fun getAllPersons(): List<Person>
+    fun getAllPeople(): List<Person>
 
-    fun getPersonsWithName(name: String): List<Person>
+    fun getWithId(id: Long): Person
 
-    fun addPerson(person: Person): Boolean
+    fun getWithName(name: String): List<Person>
+
+    fun deleteWithId(id: Long): Boolean
 }
