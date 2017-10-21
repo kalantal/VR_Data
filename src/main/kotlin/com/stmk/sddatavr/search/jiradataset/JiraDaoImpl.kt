@@ -13,4 +13,8 @@ import org.springframework.stereotype.Component
 class JiraDaoImpl
     @Autowired
     constructor(searchClient: Client,
-                gson: Gson) : JiraDao, AbstractDao<JiraTicket>(searchClient, gson, index = "jiratickets", indexType = "Jira_Ticket_Type", recordClazz = JiraTicket::class.java)
+                gson: Gson) : JiraDao, AbstractDao<JiraTicket>(searchClient, gson, index = "jiratickets", indexType = "Jira_Ticket_Type", recordClazz = JiraTicket::class.java) {
+    
+    override fun getTicketWithId(id: Long): JiraTicket = getWithId(id)
+
+}

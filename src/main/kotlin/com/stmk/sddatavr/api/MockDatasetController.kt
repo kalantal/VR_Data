@@ -1,6 +1,6 @@
 package com.stmk.sddatavr.api
 
-import com.stmk.sddatavr.api.elasticsearch.mock.MockDataObject
+import com.stmk.sddatavr.search.mockdataset.MockDataObject
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.*
 import org.springframework.web.bind.annotation.RestController

@@ -11,11 +11,11 @@ import org.elasticsearch.index.reindex.DeleteByQueryAction
  * Created by Krishna Chaitanya Kandula on 10/5/17.
  */
 
-open class AbstractDao<T : AbstractElasticsearchRecord>(protected val searchClient: Client,
-                                                        protected val gson: Gson,
-                                                        protected val index: String,
-                                                        protected val indexType: String,
-                                                        protected val recordClazz: Class<T>) : Dao<T> {
+abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val searchClient: Client,
+                                                            protected val gson: Gson,
+                                                            protected val index: String,
+                                                            protected val indexType: String,
+                                                            protected val recordClazz: Class<T>) : Dao<T> {
 
     override fun getAll(): List<T> {
         val response: SearchResponse = searchClient.prepareSearch()

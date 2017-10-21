@@ -11,5 +11,5 @@ data class JiraTicket(val jiraId: Long,
                       @SerializedName("issuetype_id") val issueTypeId: Long,
                       @SerializedName("issuetype_description") val issueTypeDescription: String,
                       @SerializedName("issuetype_name") val issueTypeName: String,
-                      @SerializedName("issuetype_subtask") val issueTypeSubtask: Boolean,
+                      @SerializedName("issuetype_subtask") val issueTypeSubtask: Long,
                       @SerializedName("assignee_name") val assigneeName: String) : AbstractElasticsearchRecord(jiraId)
