@@ -1,7 +1,7 @@
 package com.stmk.sddatavr.api
 
-import com.stmk.sddatavr.search.sampledataset.Person
-import com.stmk.sddatavr.search.sampledataset.PersonDao
+import com.stmk.sddatavr.search.dataset.sample.Person
+import com.stmk.sddatavr.search.dataset.sample.PersonDao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

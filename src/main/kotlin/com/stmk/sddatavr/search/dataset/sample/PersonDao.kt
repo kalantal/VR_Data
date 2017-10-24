@@ -1,4 +1,4 @@
-package com.stmk.sddatavr.search.sampledataset
+package com.stmk.sddatavr.search.dataset.sample
 
 /**
  * Created by Krishna Chaitanya Kandula on 10/4/17.

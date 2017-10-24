@@ -1,7 +1,8 @@
-package com.stmk.sddatavr.search.jiradataset
+package com.stmk.sddatavr.search.dataset.jira
 
 import com.google.gson.Gson
 import com.stmk.sddatavr.search.AbstractDao
+import com.stmk.sddatavr.search.models.QueryListWrapper
 import org.elasticsearch.client.Client
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -17,4 +18,5 @@ class JiraDaoImpl
     
     override fun getTicketWithId(id: Long): JiraTicket = getWithId(id)
 
+    override fun getTicketsWithQueries(queries: QueryListWrapper): List<JiraTicket>  = getWithQuery(queries.queries)
 }

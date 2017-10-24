@@ -1,4 +1,4 @@
-package com.stmk.sddatavr.search.mockdataset
+package com.stmk.sddatavr.search.dataset.mock
 
 /**
  * Created by Krishna Chaitanya Kandula on 10/4/17.

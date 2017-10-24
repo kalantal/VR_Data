@@ -1,4 +1,4 @@
-package com.stmk.sddatavr.search.sampledataset
+package com.stmk.sddatavr.search.dataset.sample
 
 import com.google.gson.Gson
 import com.stmk.sddatavr.search.AbstractDao
