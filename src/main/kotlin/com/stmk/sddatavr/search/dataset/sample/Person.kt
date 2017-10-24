@@ -1,4 +1,4 @@
-package com.stmk.sddatavr.search.sampledataset
+package com.stmk.sddatavr.search.dataset.sample
 
 import com.stmk.sddatavr.search.AbstractElasticsearchRecord
 import java.util.*

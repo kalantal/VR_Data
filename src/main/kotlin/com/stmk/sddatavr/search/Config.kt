@@ -18,11 +18,15 @@ class Config {
     @Bean(name = arrayOf("ClusterName"))
     fun provideClusterName(): String = "my-application"
 
+    @Bean(name = arrayOf("HomePath"))
+    fun provideHomePath(): String = "/Users/krishnakandula/Documents/ElasticSearchHome"
+
     @Bean
-    fun provideElasticSearchSettings(@Qualifier("ClusterName") clusterName: String): Settings {
+    fun provideElasticSearchSettings(@Qualifier("ClusterName") clusterName: String,
+                                     @Qualifier("HomePath") path: String): Settings {
         return Settings.builder()
                 .put("cluster.name", clusterName)
-                .put("path.home", "/Users/krishnakandula/Documents/ElasticSearchHome")
+                .put("path.home", path)
                 .build()
     }
 
