@@ -19,7 +19,7 @@ class Config {
     fun provideClusterName(): String = "my-application"
 
     @Bean(name = arrayOf("HomePath"))
-    fun provideHomePath(): String = "/Users/krishnakandula/Documents/ElasticSearchHome"
+    fun provideHomePath(): String = "/usr/share/home"
 
     @Bean
     fun provideElasticSearchSettings(@Qualifier("ClusterName") clusterName: String,
@@ -32,8 +32,19 @@ class Config {
 
     @Bean
     fun provideClient(settings: Settings): Client {
+        //Get host and port from environment variables
+        val envMap = System.getenv()
+        val host = envMap[("SDVR_ES_HOST")]
+        var port: Int?
+        try {
+            port = envMap.getOrDefault("SDVR_ES_PORT", "9200").toInt()
+        } catch (e: Exception) {
+            //TODO: Add logger functionality
+            print(e.message)
+            throw IllegalArgumentException("Unable to convert 'SDVR_ES_PORT' environment variable to an Int")
+        }
         return PreBuiltTransportClient(settings)
-                .addTransportAddress(InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"), 9300))
+                .addTransportAddress(InetSocketTransportAddress(InetAddress.getByName(host), port!!))
     }
 
 }

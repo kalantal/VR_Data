@@ -70,7 +70,7 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
     override fun getWithQuery(queries: List<Query>): List<T> {
         var qb = BoolQueryBuilder()
         queries.forEach({ query ->
-            val matchQuery: MatchQueryBuilder = QueryBuilders.matchQuery(query.field, query.value)
+            val matchQuery: QueryBuilder = createQuery(query)
             qb = when (query.occurance) {
                 Occur.MUST -> qb.must(matchQuery)
                 Occur.MUST_NOT -> qb.mustNot(matchQuery)
@@ -86,5 +86,27 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
                 .actionGet()
 
         return response.hits.map { gson.fromJson(it.sourceAsString, recordClazz) }
+    }
+
+    private fun createQuery(query: Query): BoolQueryBuilder {
+        var qb = BoolQueryBuilder()
+        val queryList: MutableList<QueryBuilder> = mutableListOf()
+
+        if (query.field != null && query.value != null) {
+            val matchQuery: MatchQueryBuilder = QueryBuilders.matchQuery(query.field, query.value)
+            queryList.add(matchQuery)
+
+        } else if (query.nestedQueries != null) {
+            query.nestedQueries.forEach { queryList.add(createQuery(it)) }
+        }
+
+        queryList.forEach { nestedQuery ->
+            qb = when (query.occurance) {
+                Occur.MUST -> qb.must(nestedQuery)
+                Occur.MUST_NOT -> qb.mustNot(nestedQuery)
+                Occur.SHOULD -> qb.should(nestedQuery)
+            }
+        }
+        return qb
     }
 }
