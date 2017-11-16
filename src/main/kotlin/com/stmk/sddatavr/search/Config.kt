@@ -15,7 +15,7 @@ import java.net.InetAddress
 @Configuration
 class Config {
 
-    companion object {
+    private companion object {
         val CLUSTER_NAME_PROPERTY = "cluster.name"
         val HOME_PATH_PROPERTY = "path.home"
 

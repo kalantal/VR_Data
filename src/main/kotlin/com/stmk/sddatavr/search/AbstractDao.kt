@@ -20,10 +20,15 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
                                                             protected val indexType: String,
                                                             protected val recordClazz: Class<T>) : Dao<T> {
 
+    private companion object {
+        val QUERY_RESPONSE_SIZE = 50
+    }
+
     override fun getAll(): List<T> {
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
+                .setSize(QUERY_RESPONSE_SIZE)
                 .setQuery(QueryBuilders.matchAllQuery())
                 .execute()
                 .actionGet()
@@ -35,6 +40,7 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
+                .setSize(QUERY_RESPONSE_SIZE)
                 .setQuery(QueryBuilders.matchQuery("id", id))
                 .execute()
                 .actionGet()
@@ -81,6 +87,7 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
+                .setSize(QUERY_RESPONSE_SIZE)
                 .setQuery(qb)
                 .execute()
                 .actionGet()
