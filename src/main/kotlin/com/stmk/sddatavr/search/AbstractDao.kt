@@ -24,11 +24,12 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
         val QUERY_RESPONSE_SIZE = 50
     }
 
-    override fun getAll(): List<T> {
+    override fun getAll(pagToken: Int): List<T> {
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
                 .setSize(QUERY_RESPONSE_SIZE)
+                .setFrom(pagToken)
                 .setQuery(QueryBuilders.matchAllQuery())
                 .execute()
                 .actionGet()
@@ -73,7 +74,7 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
         return response.deleted.toInt() != 0
     }
 
-    override fun getWithQuery(queries: List<Query>): List<T> {
+    override fun getWithQuery(queries: List<Query>, pagToken: Int): List<T> {
         var qb = BoolQueryBuilder()
         queries.forEach({ query ->
             val matchQuery: QueryBuilder = createQuery(query)
@@ -84,13 +85,16 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
             }
         })
 
+
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
                 .setSize(QUERY_RESPONSE_SIZE)
                 .setQuery(qb)
+                .setFrom(pagToken)
                 .execute()
                 .actionGet()
+
 
         return response.hits.map { gson.fromJson(it.sourceAsString, recordClazz) }
     }
