@@ -3,8 +3,6 @@ package com.stmk.sddatavr.search
 import com.google.gson.Gson
 import com.stmk.sddatavr.search.models.Occur
 import com.stmk.sddatavr.search.models.Query
-import com.stmk.sddatavr.search.models.QueryListWrapper
-import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.client.Client
 import org.elasticsearch.index.query.*
@@ -15,25 +13,27 @@ import org.elasticsearch.index.reindex.DeleteByQueryAction
  * Created by Krishna Chaitanya Kandula on 10/5/17.
  */
 abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val searchClient: Client,
-                                                            protected val gson: Gson,
-                                                            protected val index: String,
-                                                            protected val indexType: String,
-                                                            protected val recordClazz: Class<T>) : Dao<T> {
+                                                               protected val gson: Gson,
+                                                               protected val index: String,
+                                                               protected val indexType: String,
+                                                               protected val recordClazz: Class<T>) : Dao<T> {
 
     private companion object {
         val QUERY_RESPONSE_SIZE = 50
     }
 
-    override fun getAll(): List<T> {
+    override fun getAll(paginationToken: Int): AbstractResponse<T> {
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
                 .setSize(QUERY_RESPONSE_SIZE)
+                .setFrom(paginationToken)
                 .setQuery(QueryBuilders.matchAllQuery())
                 .execute()
                 .actionGet()
 
-        return response.hits.map { gson.fromJson(it.sourceAsString, recordClazz) }
+        val formattedResponse: List<T> = response.hits.map { gson.fromJson(it.sourceAsString, recordClazz) }
+        return AbstractResponse(formattedResponse, paginationToken + formattedResponse.size)
     }
 
     override fun getWithId(id: Long): T {
@@ -73,7 +73,7 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
         return response.deleted.toInt() != 0
     }
 
-    override fun getWithQuery(queries: List<Query>): List<T> {
+    override fun getWithQuery(queries: List<Query>, paginationToken: Int): AbstractResponse<T> {
         var qb = BoolQueryBuilder()
         queries.forEach({ query ->
             val matchQuery: QueryBuilder = createQuery(query)
@@ -84,15 +84,18 @@ abstract class AbstractDao<T : AbstractElasticsearchRecord>(protected val search
             }
         })
 
+
         val response: SearchResponse = searchClient.prepareSearch()
                 .setIndices(index)
                 .setTypes(indexType)
                 .setSize(QUERY_RESPONSE_SIZE)
                 .setQuery(qb)
+                .setFrom(paginationToken)
                 .execute()
                 .actionGet()
 
-        return response.hits.map { gson.fromJson(it.sourceAsString, recordClazz) }
+        val formattedResponse: List<T> = response.hits.map { gson.fromJson(it.sourceAsString, recordClazz) }
+        return AbstractResponse(formattedResponse, paginationToken + formattedResponse.size)
     }
 
     private fun createQuery(query: Query): BoolQueryBuilder {

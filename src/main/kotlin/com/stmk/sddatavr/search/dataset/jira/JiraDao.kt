@@ -1,5 +1,7 @@
 package com.stmk.sddatavr.search.dataset.jira
 
+import com.stmk.sddatavr.search.AbstractResponse
+import com.stmk.sddatavr.search.models.PaginationWrapper
 import com.stmk.sddatavr.search.models.QueryListWrapper
 
 /**
@@ -8,9 +10,9 @@ import com.stmk.sddatavr.search.models.QueryListWrapper
 
 interface JiraDao {
 
-    fun getAll(): List<JiraTicket>
+    fun getAll(query: PaginationWrapper): AbstractResponse<JiraTicket>
 
     fun getTicketWithId(id: Long): JiraTicket
 
-    fun getTicketsWithQueries(queries: QueryListWrapper): List<JiraTicket>
+    fun getTicketsWithQueries(queries: QueryListWrapper): AbstractResponse<JiraTicket>
 }
