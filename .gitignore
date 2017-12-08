@@ -25,3 +25,6 @@ nbdist/
 /data/
 
 \.DS_Store
+
+#Datasets
+src/main/kotlin/com/stmk/sddatavr/search/dataset/openshift/dockermetics-sample-data_20171108-100MB\.zip
