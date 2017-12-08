@@ -3,7 +3,9 @@ package com.stmk.sddatavr.search.models
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Krishna Chaitanya Kandula on 10/23/17.
+ * Determines the conditions of when an attribute or query should occur. See the Elasticsearch documentation for more info.
+ *
+ * @author Krishna Chaitanya Kandula
  */
 enum class Occur(val occurance: String) {
     @SerializedName("must") MUST("must"),

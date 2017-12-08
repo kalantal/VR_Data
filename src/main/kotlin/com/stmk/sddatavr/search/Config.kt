@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Configuration
 import java.net.InetAddress
 
 /**
- * Created by Krishna Chaitanya Kandula on 10/3/17.
+ * Spring configuration class for searching
+ *
+ * @author Krishna Chaitanya Kandula
+ * @since 12-07-2017
  */
 @Configuration
 class Config {
@@ -27,6 +30,11 @@ class Config {
         val HOME_PATH = "/usr/share/home"
     }
 
+    /**
+     * Exposes the default Elasticsearch settings to the dependency graph
+     *
+     * @return the Settings containing the Elasticsearch cluster properties
+     */
     @Bean
     fun provideElasticSearchSettings(): Settings {
         return Settings.builder()
@@ -35,6 +43,13 @@ class Config {
                 .build()
     }
 
+    /**
+     * Exposes the default Elasticsearch client to the dependency graph. Creates the client with the
+     * default ports and host names
+     *
+     * @param settings the default Elasticsearch settings, injected using Spring
+     * @return the Elasticsearch client to connect to the cluster
+     */
     @Bean
     fun provideClient(settings: Settings): Client {
         //Get host and port from environment variables

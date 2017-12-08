@@ -3,10 +3,14 @@ package com.stmk.sddatavr.search
 import com.stmk.sddatavr.search.models.Query
 
 /**
- * Created by Krishna Chaitanya Kandula on 10/5/17.
+ * The interface for an Elasticsearch Dao. See AbstractDao for an implementation
+ *
+ * @see AbstractDao
+ * @author Krishna C Kandula
+ * @since 12-07-2017
  */
 interface Dao<T : AbstractElasticsearchRecord> {
-    fun getAll(): List<T>
+    fun getAll(paginationToken: Int): AbstractResponse<T>
 
     fun getWithId(id: Long): T
 
@@ -14,5 +18,5 @@ interface Dao<T : AbstractElasticsearchRecord> {
 
     fun deleteWithId(id: Long): Boolean
 
-    fun getWithQuery(queries: List<Query>): List<T>
+    fun getWithQuery(queries: List<Query>, paginationToken: Int): AbstractResponse<T>
 }

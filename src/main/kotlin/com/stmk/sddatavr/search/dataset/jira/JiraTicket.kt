@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.stmk.sddatavr.search.AbstractElasticsearchRecord
 
 /**
- * Created by Krishna Chaitanya Kandula on 10/12/17.
+ * @author Krishna Chaitanya Kandula
  */
 data class JiraTicket(@SerializedName("jira_id") val jiraId: Long,
                       @SerializedName("summary") val summary: String,
