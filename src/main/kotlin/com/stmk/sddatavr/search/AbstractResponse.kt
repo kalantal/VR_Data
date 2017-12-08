@@ -1,7 +1,9 @@
 package com.stmk.sddatavr.search
 
 /**
- * Created by Mandy Cho :) on 11/29/17.
+ *
+ * @author Mandy Cho
+ * @since 11-29-2017
  */
 data class AbstractResponse<out T : AbstractElasticsearchRecord>(val records: List<T>,
                                                                  val paginationToken: Int)

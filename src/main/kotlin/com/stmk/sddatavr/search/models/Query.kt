@@ -3,7 +3,16 @@ package com.stmk.sddatavr.search.models
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Krishna Chaitanya Kandula on 10/23/17.
+ * The query class that the frontend will create
+ *
+ * @param field the name of the attribute
+ * @param value the value of the attribute to build the condition off of
+ * @param occurance the ocurrence relationship between this query and others
+ * @param nestedQueries any nested queries
+ *
+ * @see Occur
+ *
+ * @author Krishna Chaitanya Kandula
  */
 data class Query(@SerializedName("field") val field: String?,
                  @SerializedName("value") val value: Any?,
