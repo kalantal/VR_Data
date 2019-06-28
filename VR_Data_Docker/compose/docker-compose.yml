@@ -1,0 +1,16 @@
+version: '3'
+services:
+  es:
+    image: "stmk/elasticsearch"
+
+  log:
+    image: "stmk/logstash"
+    depends_on: 
+      - es
+
+  web:
+    image: "stmk/backend"
+    ports:
+      - "8010:8010"
+    depends_on:
+      - es

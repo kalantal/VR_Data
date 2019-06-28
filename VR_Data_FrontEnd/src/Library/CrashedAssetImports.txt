@@ -1,0 +1,1 @@
+Assets/OvrAvatar/Content/Materials/AvatarSurfaceShaderSelfOccluding.shader

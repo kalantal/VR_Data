@@ -1,1 +1,0 @@
-This data set is 100MB (and through magical compression is 5MB). Totaling 26300 objects with 9~ sub categories.
